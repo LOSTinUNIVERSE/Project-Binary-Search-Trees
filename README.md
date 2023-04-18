@@ -1,2 +1,2 @@
-# template
-just a template repo
+# binary tree
+binary search tree
