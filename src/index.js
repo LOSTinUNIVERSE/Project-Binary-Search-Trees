@@ -64,5 +64,5 @@ const mergeSort = function (array) {
 }
 
 
-const result = mergeSort(newArray)
-console.log(result)
+const finalResult = mergeSort(newArray)
+console.log(finalResult)
