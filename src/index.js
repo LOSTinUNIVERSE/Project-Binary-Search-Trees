@@ -1,4 +1,4 @@
-// eslint-disable-next-line max-classes-per-file
+/* eslint-disable max-classes-per-file */
 class Node {
     constructor(attr, leftChild, rightChild) {
         this.attr = attr
@@ -44,16 +44,14 @@ function merge(leftArray, rightArray) {
         resultIndex++;
     }
 
-    // Append remaining elements from rightArray
     while (rightIndex < rightArray.length) {
         result[resultIndex] = rightArray[rightIndex];
         rightIndex++;
         resultIndex++;
     }
-    console.log(result);
     return result
 }
-function mergeSort(array) {
+const mergeSort = function (array) {
     if (array.length <= 1) { return array }
     const mid = Math.floor(array.length / 2);
     const leftHalf = array.slice(0, mid);
@@ -64,7 +62,7 @@ function mergeSort(array) {
 
     return merge(sortedLeft, sortedRight)
 }
-mergeSort(newArray)
 
 
-
+const result = mergeSort(newArray)
+console.log(result)
