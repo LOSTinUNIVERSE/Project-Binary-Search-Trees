@@ -1,22 +1,10 @@
 /* eslint-disable max-classes-per-file */
-class Node {
-    constructor(attr, leftChild, rightChild) {
-        this.attr = attr
-        this.leftChild = leftChild
-        this.rightChild = rightChild
-    }
-}
-class Tree {
-    constructor(array, root) {
-        this.root = root
-    }
-}
+
 const arrayNumbers = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 
 const duplicatesRemoved = function removeDuplicates(array) {
     return Array.from(new Set(array))
 }
-
 const newArray = duplicatesRemoved(arrayNumbers)
 
 function merge(leftArray, rightArray) {
@@ -62,7 +50,30 @@ const mergeSort = function (array) {
 
     return merge(sortedLeft, sortedRight)
 }
-
-
 const finalResult = mergeSort(newArray)
-console.log(finalResult)
+
+class Node {
+    constructor(data) {
+        this.data = data
+        this.left = null
+        this.right = null
+    }
+}
+class Tree {
+    constructor(array) {
+        this.root = array
+    }
+}
+const root = null
+function buildTree(array, start, end) {
+    if (start > end) { return null }
+    const mid = Math.floor((start + end) / 2)
+    const node = new Node(array[mid])
+    node.left = buildTree(array, start, mid - 1)
+    node.right = buildTree(array, mid + 1, end)
+    return new Tree(node)
+}
+const n = finalResult.length
+const resultedTree = buildTree(finalResult, 0, n - 1)
+console.log(resultedTree);
+
