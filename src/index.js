@@ -117,7 +117,6 @@ function deleteRec(root, key) {
             succParent = succ
             succ = succ.left
         }
-        console.log(succ.left);
 
         if (succParent != root) {
             succParent.left = succ.right;
@@ -130,18 +129,12 @@ function deleteRec(root, key) {
     }
 }
 const deletedResult = deleteRec(tree.root, 8)
-console.log(deletedResult);
 
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-    if (node === null) {
-        return;
-    }
-    if (node.right !== null) {
-        prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-    }
-    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-    if (node.left !== null) {
-        prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-    }
+function findNode(node, key) {
+    if (node == null) return node
+    if (key > node.key) return findNode(node.right, key)
+    if (key < node.key) return findNode(node.left, key)
+    if (key == node.key) return node
 }
-// prettyPrint(tree)
+const foundNode = findNode(tree.root, 9)
+
