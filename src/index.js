@@ -53,17 +53,13 @@ const mergeSort = function (array) {
 const finalResult = mergeSort(newArray)
 
 class Node {
-    constructor(data) {
-        this.data = data
+    constructor(key) {
+        this.key = key
         this.left = null
         this.right = null
     }
 }
-class Tree {
-    constructor(array) {
-        this.root = array
-    }
-}
+
 const root = null
 function buildTree(array, start, end) {
     if (start > end) { return null }
@@ -71,9 +67,51 @@ function buildTree(array, start, end) {
     const node = new Node(array[mid])
     node.left = buildTree(array, start, mid - 1)
     node.right = buildTree(array, mid + 1, end)
-    return new Tree(node)
+    return node
 }
 const n = finalResult.length
-const resultedTree = buildTree(finalResult, 0, n - 1)
-console.log(resultedTree);
 
+class Tree {
+    constructor(array, start, end) {
+        this.root = buildTree(array, start, end)
+    }
+}
+const tree = new Tree(finalResult, 0, n - 1)
+
+function insert(node, key) {
+    if (node == null) {
+        node = new Node(key)
+        return node
+    }
+    if (key > node.key) return insert(node.right, key)
+    return insert(node.left, key);
+}
+// const inserted = insert(tree.root, 1)
+
+let rootToDelete = null
+function deleteKey(key) {
+    rootToDelete = deleteRec(rootToDelete, key)
+}
+function minValue(root) {
+    let minv = root.key;
+    while (root.left != null) {
+        minv = root.left.key;
+        root = root.left;
+    }
+    return minv;
+}
+function deleteRec(root, key) {
+    if (root == null) return root;
+    console.log('l');
+    if (key < root.key) root.left = deleteRec(root.left, key);
+    else if (key > root.key) root.right = deleteRec(root.right, key);
+    else {
+        if (root.left == null) return root.right
+        if (root.right == null) return root.left
+        root.key = minValue(root.right);
+        root.right = deleteRec(root.right, root.key);
+    }
+    return root
+}
+const deletedResult = deleteRec(tree.root, 8)
+console.log(deletedResult);
