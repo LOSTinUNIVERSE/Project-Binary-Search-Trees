@@ -88,30 +88,60 @@ function insert(node, key) {
 }
 // const inserted = insert(tree.root, 1)
 
-let rootToDelete = null
-function deleteKey(key) {
-    rootToDelete = deleteRec(rootToDelete, key)
-}
-function minValue(root) {
-    let minv = root.key;
-    while (root.left != null) {
-        minv = root.left.key;
-        root = root.left;
-    }
-    return minv;
-}
+
 function deleteRec(root, key) {
-    if (root == null) return root;
-    console.log('l');
-    if (key < root.key) root.left = deleteRec(root.left, key);
-    else if (key > root.key) root.right = deleteRec(root.right, key);
-    else {
-        if (root.left == null) return root.right
-        if (root.right == null) return root.left
-        root.key = minValue(root.right);
-        root.right = deleteRec(root.right, root.key);
+    if (root == null) { return root; }
+    if (key < root.key) {
+        root.left = deleteRec(root.left, key);
+        return root
     }
-    return root
+
+    if (key > root.key) {
+        root.right = deleteRec(root.right, key);
+        return root
+    }
+
+    if (root.left == null) {
+        const temp = root.right
+        return temp
+    }
+    if (root.right == null) {
+        const temp = root.left
+        return temp
+    }
+    // eslint-disable-next-line no-else-return
+    else {
+        let succParent = root
+        let succ = root.right
+        while (succ.left != null) {
+            succParent = succ
+            succ = succ.left
+        }
+        console.log(succ.left);
+
+        if (succParent != root) {
+            succParent.left = succ.right;
+        }
+        else { succParent.right = succ.right; }
+
+        root.key = succ.key;
+
+        return root;
+    }
 }
 const deletedResult = deleteRec(tree.root, 8)
 console.log(deletedResult);
+
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+    if (node === null) {
+        return;
+    }
+    if (node.right !== null) {
+        prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.left !== null) {
+        prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+}
+// prettyPrint(tree)
