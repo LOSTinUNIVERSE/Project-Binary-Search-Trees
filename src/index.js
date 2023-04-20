@@ -1,12 +1,12 @@
 /* eslint-disable max-classes-per-file */
 
 const arrayNumbers = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+// const arrayNumbers = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 1, 1, 1]
 
 const duplicatesRemoved = function removeDuplicates(array) {
     return Array.from(new Set(array))
 }
 const newArray = duplicatesRemoved(arrayNumbers)
-
 function merge(leftArray, rightArray) {
     let leftIndex = 0
     let rightIndex = 0
@@ -51,7 +51,6 @@ const mergeSort = function (array) {
     return merge(sortedLeft, sortedRight)
 }
 const finalResult = mergeSort(newArray)
-
 class Node {
     constructor(key) {
         this.key = key
@@ -69,22 +68,23 @@ function buildTree(array, start, end) {
     node.right = buildTree(array, mid + 1, end)
     return node
 }
-const n = finalResult.length
 
 class Tree {
     constructor(array, start, end) {
         this.root = buildTree(array, start, end)
     }
 }
+const n = finalResult.length
 const tree = new Tree(finalResult, 0, n - 1)
-console.log(tree);
+// console.log(tree);
 
 
 function insert(node, key) {
     if (node == null) {
-        node = new Node(key)
         return node
     }
+    console.log(node);
+
     if (key > node.key) return insert(node.right, key)
     return insert(node.left, key);
 }
@@ -136,7 +136,8 @@ function findNode(node, key) {
     if (key < node.key) return findNode(node.left, key)
     if (key == node.key) return node
 }
-const foundNode = findNode(tree.root, 9)
+const foundNode = findNode(tree.root, 7)
+
 
 function breadthFirstSearch(root, visitFn = node => node.data) {
     const result = []
@@ -151,19 +152,95 @@ function breadthFirstSearch(root, visitFn = node => node.data) {
     }
     return result
 }
-const result = breadthFirstSearch(tree.root)
+// const result = breadthFirstSearch(tree.root)
 // console.log(result);
 
-function forDepthFirst(node, parent = 0) {
+function inOrder(node, data = []) {
     if (node == null) return node
-    const data = node.key
-    console.log(data);
-    console.log(tree);
-    if (node == parent.left) { forDepthFirst(parent.right, node) }
-    if (node == parent.right) { forDepthFirst(parent.left, node) }
-    if (node.right == null) { forDepthFirst(parent.left, node) }
-    if (node.left == null) { forDepthFirst(parent.right, node) }
-    forDepthFirst(node.right, node)
+    inOrder(node.left, data)
+    data.push(node.key)
+    inOrder(node.right, data)
+    return data
+}
+
+// console.log(inOrderData);
+
+
+function preOrder(node, data = [], visitFn = node => node.key) {
+    if (node == null) return node
+    data.push(node.key)
+    preOrder(node.left, data)
+    preOrder(node.right, data)
+    return data
+}
+
+// console.log(preOrderData);
+
+function postOrder(node, data = [], visitFn = node => node.key) {
+    if (node == null) return node
+    postOrder(node.left, data)
+    postOrder(node.right, data)
+    data.push(node.key)
+    return data
+}
+
+// console.log(postOrderData);
+const counter = 0
+const defineDepth = function (node, counter = 0) {
+    if (node == null) return counter
+    counter += 1
+    if (node.left != null) defineDepth(node.left)
+    if (node.right != null) defineDepth(node.right)
+    // console.log(counter);
+    return counter
+}
+// const depthOfNode = defineDepth(foundNode)
+// console.log(depthOfNode);
+
+let heightCounter = 0
+function defineHeight(node, key) {
+    if (node == null) return heightCounter
+    heightCounter++
+    if (key > node.key) return defineHeight(node.right, key)
+
+    if (key < node.key) return defineHeight(node.left, key)
+
+    if (key == node.key) return heightCounter
+    return heightCounter
+}
+const heightOfNode = defineHeight(tree.root, 4)
+
+function height(node) {
+    if (node == null) return 0
+    return Math.max(height(node.left), height(node.right)) + 1
+}
+
+const isBalanced = function (node) {
+    if (node == null) return true
+    const lh = height(node.left)
+    const rh = height(node.right)
+
+    if (Math.abs(lh - rh) <= 1 && isBalanced(
+        node.left) == true && isBalanced(node.right) == true)
+        return true
+
+    return false
 
 }
-// forDepthFirst(tree.root)
+
+
+const balanceTree = function () {
+    const orderData = inOrder(tree.root)
+    console.log(orderData);
+    const newTree = new Tree(orderData, 0, n - 1)
+    return newTree
+}
+// const newTree = balanceTree()
+const something = new Tree(finalResult, 0, n - 1)
+console.log(isBalanced(tree.root));
+// const postOrderData = postOrder(tree.root)
+// const preOrderData = preOrder(tree.root)
+// const inOrderData = inOrder(tree.root)
+const nodeTOChange = insert(tree.root, 10)
+
+
