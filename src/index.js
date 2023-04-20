@@ -81,12 +81,14 @@ const tree = new Tree(finalResult, 0, n - 1)
 
 function insert(node, key) {
     if (node == null) {
-        return node
+        return new Node(key);
     }
-    console.log(node);
-
-    if (key > node.key) return insert(node.right, key)
-    return insert(node.left, key);
+    if (key > node.key) {
+        node.right = insert(node.right, key);
+    } else {
+        node.left = insert(node.left, key);
+    }
+    return node;
 }
 
 function deleteRec(root, key) {
@@ -140,20 +142,28 @@ const foundNode = findNode(tree.root, 7)
 
 
 function breadthFirstSearch(root, visitFn = node => node.data) {
-    const result = []
-    const queue = [root]
+    const result = [];
+    const queue = [{ node: root, level: 0 }];
 
     while (queue.length > 0) {
-        const current = queue.shift()
-        if (current == null) continue;
-        result.push(current.key)
-        if (current.left != null) queue.push(current.left)
-        if (current.right != null) queue.push(current.right)
+        const { node, level } = queue.shift();
+
+        if (node == null) {
+            continue;
+        }
+
+        result.push({ key: node.key, level });
+        if (node.left != null) {
+            queue.push({ node: node.left, level: level + 1 });
+        }
+        if (node.right != null) {
+            queue.push({ node: node.right, level: level + 1 });
+        }
     }
-    return result
+
+    return result;
 }
-// const result = breadthFirstSearch(tree.root)
-// console.log(result);
+
 
 function inOrder(node, data = []) {
     if (node == null) return node
@@ -235,12 +245,21 @@ const balanceTree = function () {
     const newTree = new Tree(orderData, 0, n - 1)
     return newTree
 }
-// const newTree = balanceTree()
 const something = new Tree(finalResult, 0, n - 1)
-console.log(isBalanced(tree.root));
 // const postOrderData = postOrder(tree.root)
 // const preOrderData = preOrder(tree.root)
 // const inOrderData = inOrder(tree.root)
-const nodeTOChange = insert(tree.root, 10)
-
+insert(tree.root, 10)
+insert(tree.root, 11)
+insert(tree.root, 12)
+// console.log(isBalanced(tree.root));
+// const newTree = balanceTree()
+// console.log(newTree);
+// console.log(isBalanced(newTree.root));
+ 
+// ! skipped
+// const result = breadthFirstSearch(tree.root)
+// console.log(result);
+// console.log(tree);
+// 
 
