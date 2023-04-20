@@ -76,7 +76,6 @@ class Tree {
         this.root = buildTree(array, start, end)
     }
 }
-const tree = new Tree(finalResult, 0, n - 1)
 
 function insert(node, key) {
     if (node == null) {
@@ -86,8 +85,6 @@ function insert(node, key) {
     if (key > node.key) return insert(node.right, key)
     return insert(node.left, key);
 }
-// const inserted = insert(tree.root, 1)
-
 
 function deleteRec(root, key) {
     if (root == null) { return root; }
@@ -128,7 +125,7 @@ function deleteRec(root, key) {
         return root;
     }
 }
-const deletedResult = deleteRec(tree.root, 8)
+// const deletedResult = deleteRec(tree.root, 8)
 
 function findNode(node, key) {
     if (node == null) return node
@@ -136,5 +133,34 @@ function findNode(node, key) {
     if (key < node.key) return findNode(node.left, key)
     if (key == node.key) return node
 }
-const foundNode = findNode(tree.root, 9)
+// const foundNode = findNode(tree.root, 9)
 
+function breadthFirstSearch(root, visitFn = node => node.data) {
+    const result = []
+    const queue = [root]
+
+    while (queue.length > 0) {
+        const current = queue.shift()
+        if (current == null) continue;
+        result.push(current.key)
+        if (current.left != null) queue.push(current.left)
+        if (current.right != null) queue.push(current.right)
+    }
+    return result
+}
+// const result = breadthFirstSearch(tree.root)
+// console.log(result);
+
+// function forDepthFirst(node, parent = 0) {
+//     if (node == null) return node
+//     const data = node.key
+//     console.log(data);
+//     console.log(tree);
+//     if (node == parent.left) { forDepthFirst(parent.right, node) }
+//     if (node == parent.right) { forDepthFirst(parent.left, node) }
+//     if (node.right == null) { forDepthFirst(parent.left, node) }
+//     if (node.left == null) { forDepthFirst(parent.right, node) }
+//     forDepthFirst(node.right, node)
+
+// }
+// forDepthFirst(tree.root,)
